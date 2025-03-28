@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BGR-SERVICES</title>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    <style>
+
+#chatbot-icon img {
+    width: 60px; /* Largeur de l'image */
+    height: 60px; /* Hauteur de l'image */
+    border-radius: 50%; /* Coins arrondis pour une apparence circulaire */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombre douce pour un effet visuel */
+    cursor: pointer; /* Curseur pointeur pour indiquer qu'il est cliquable */
+    transition: transform 0.3s; /* Animation au survol */
+}
+
+#chatbot-icon img:hover {
+    transform: scale(1.1); /* Zoom léger au survol */
+}
+
+
+        #cookie-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #323232;
+    color: white;
+    text-align: center;
+    padding: 15px 10px;
+    font-size: 14px;
+    z-index: 1000;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+}
+
+#cookie-banner p {
+    margin: 0;
+    display: inline;
+}
+
+#cookie-banner a {
+    color: #FFD700;
+    text-decoration: underline;
+}
+
+#cookie-banner button {
+    background-color: #32CD32;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    margin-left: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#cookie-banner button:hover {
+    background-color: #228B22;
+}
+
+
+#chatbot {
+    display: none; /* Le chatbot est masqué par défaut */
+    width: 300px;
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+}
+
+#chatbot-header {
+    background-color: #003d00;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+}
+
+#chatbot-body {
+    background-color: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    height: 400px;
+}
+
+#messages {
+    flex-grow: 1;
+    font-size: 0.75em;
+    overflow-y: auto;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+#user-input {
+    padding: 10px;
+    border: none;
+    border-top: 1px solid #ccc;
+    width: 100%;
+}
+
+#send-button {
+    background-color: #32CD32;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
+
+#chatbot-icon {
+    width: 60px;
+    height: 60px;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #b18200;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    font-size: 30px;
+    transition: transform 0.3s;
+}
+
+#chatbot-icon:hover {
+    transform: scale(1.1);
+}
+
+
+    /* Chatbot */
+    #chatbot {
+        width: 300px;
+        position: fixed;
+        bottom: 90px;
+        right: 20px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        font-family: Arial, sans-serif;
+    }
+    #chatbot-header {
+        background-color: #003100;
+        color: white;
+        padding: 10px;
+        text-align: center;
+        font-weight: bold;
+    }
+    #chatbot-body {
+        background-color: #f9f9f9;
+        display: flex;
+        flex-direction: column;
+        height: 400px;
+    }
+    #messages {
+        flex-grow: 1;
+        overflow-y: auto;
+        padding: 10px;
+        border-bottom: 1px solid #ccc;
+    }
+    #user-input {
+        padding: 10px;
+        border: none;
+        border-top: 1px solid #ccc;
+        width: 100%;
+    }
+    #send-button {
+        background-color: #001800;
+        color: white;
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+    }
+    #send-button:hover {
+        background-color: #c28e00;
+    }
+    #suggestions {
+        display: flex;
+        gap: 10px;
+        padding: 10px;
+        border-top: 1px solid #ccc;
+        background-color: #f9f9f9;
+    }
+
+    .suggestion-button {
+        background-color: #003300;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 8px 12px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .suggestion-button:hover {
+        background-color: #a06800;
+    }
+
+       @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap');
+        
+        body {
+            font-family: 'Open Sans', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #0a5510, #0e5e0c, #075e07);
+            color: #000000;
+            overflow-x: hidden;
+            animation: colorChange 10s infinite;
+        }
+
+        @keyframes colorChange {
+            0% {
+                background: linear-gradient(135deg, #969696, #a5a5a5, #c2c2c2);
+            }
+            50% {
+                background: linear-gradient(135deg, #868686, #949493, #838282);
+            }
+            100% {
+                background: linear-gradient(135deg, #adadac, #838583, #747574);
+            }
+        }
+
+        header {
+            background-color: #033502;
+            color: white;
+            padding: 1.5em;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            animation: fadeIn 2s;
+        }
+        .header-content h1 {
+            font-size: 2.5em;
+            margin: 0;
+        }
+        .profile img {
+            max-width: 150px;
+            border-radius: 50%;
+            border: 5px solid white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            animation: zoomIn 2s;
+        }
+        nav {
+            background-color: #dbc501;
+            text-align: center;
+            padding: 1em 0;
+            animation: slideIn 2s;
+        }
+        nav a {
+            color: rgb(0, 0, 0);
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+        nav a:hover {
+            color: #FFD700;
+        }
+        main {
+            padding: 2em 10%;
+        }
+        section {
+            background: white;
+            padding: 2em;
+            border-left: 10px solid #FFD700;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2em;
+            animation: fadeInUp 2s;
+            transition: transform 0.3s;
+        }
+        section:hover {
+            transform: translateY(-10px);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1em;
+        }
+        table, th, td {
+            border: 2px solid #000000;
+            border-bottom: #000000;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+        .service-detail {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+            animation: fadeInUp 2s;
+        }
+        .service-detail img:hover {
+            transform: scale(1.1);
+        }
+        footer {
+            text-align: center;
+            padding: 1.5em;
+            background-color: #164201;
+            color: white;
+            animation: fadeInUp 2s;
+        }
+        #reseaux-sociaux a {
+            text-decoration: none;
+            margin: 0 15px;
+            color: #000300;
+            transition: color 0.3s;
+        }
+        #reseaux-sociaux a:hover {
+            color: #0004fc;
+        }
+        form div {
+            margin-bottom: 1em;
+            animation: fadeInUp 2s;
+        }
+        form label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 0.5em;
+        }
+        form input, form select, form textarea, form button {
+            width: 100%;
+            padding: 0.8em;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        form button {
+            background-color: #056105;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        form button:hover {
+            background-color: #086308;
+        }
+/* Icône WhatsApp fixe */
+
+.whatsapp-icon {
+    position: fixed;
+        width: 60px;
+        height: 60px;
+        bottom: 40px;
+        left: 40px;
+        background-color: #1d8303;
+        color: #FFF;
+        border-radius: 50px;
+        text-align: center;
+        font-size: 30px;
+        box-shadow: 2px 2px 3px #999;
+        z-index: 100;
+        transition: transform 0.3s;
+        animation: bounceIn 2s;
+            }
+    .whatsapp-icon:hover {
+      color: #128c7e;
+    }
+    .whatsapp-icon i {
+        margin-top: 16px;
+    }
+    .whatsapp-icon:hover {
+        transform: scale(1.1);
+    }
+
+    @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        @keyframes zoomIn {
+            0% { transform: scale(0.5); }
+            100% { transform: scale(1); }
+        }
+        @keyframes slideIn {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(0); }
+        }
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes bounceIn {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-30px); }
+            60% { transform: translateY(-15px); }
+        }
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            
+        }
+        .social-icons a {
+            color: rgb(0, 0, 0);
+            transition: color 0.3s;
+            
+        }
+        .social-icons a:hover {
+            color: #0e4b02fd;
+        }
+        .actualite-detail {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 20px;
+    animation: fadeInUp 2s;
+}
+.actualite-img {
+    max-width: 150px;
+    border-radius: 10px;
+    transition: transform 0.3s;
+}
+.actualite-img:hover {
+    transform: scale(1.1);
+}
+.actualite-title {
+    font-size: 1.5em;
+    color: #033003;
+}
+
+/* Style de la boîte modale */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    padding-top: 200px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 200%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.9);
+}
+
+/* Image à l'intérieur de la boîte modale */
+.modal-content {
+    margin: auto;
+    display: block;
+    width: 100%;
+    max-width: 900px;
+}
+
+/* Description de l'image */
+#caption {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+    text-align: center;
+    color: #ccc;
+    padding: 10px 0;
+}
+
+/* Bouton de fermeture */
+.close {
+    position: absolute;
+    top: 50px;
+    right: 100px;
+    color: #fff;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
+}
+    /* Style pour les détails de l'actualité */
+.actualite-detail {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin
+}
+
+.temoignage-detail {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 20px;
+    animation: fadeInUp 2s;
+}
+.temoignage-img {
+    max-width: 100px;
+    border-radius: 50%;
+    transition: transform 0.3s;
+}
+.temoignage-img:hover {
+    transform: scale(1.1);
+}
+.temoignage-title {
+    font-size: 1.5em;
+    color: #32CD32;
+}
+.stars {
+    color: rgb(201, 171, 5);
+    font-size: 1.2em;
+}
+#comment-form {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+#comment-form div {
+    margin-bottom: 15
+}
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>BIEN GEGER POUR REUSSIR (BGR-SERVICES)</h1>
+            <p class="sous-titre" style="color:#faf60b;">Centre de formation pratique en informatique.</p>
+        </div>
+        <div class="profile">
+            <img src="BGR.jpeg" alt="Photo de profil">
+        </div>        
+    </header>
+        <nav style="background-color: #ffd000; padding: 10px; display: flex; align-items: center; justify-content: space-between; font-family: Arial, sans-serif;">
+            <!-- Menu de navigation -->
+            <div style="display: flex; gap: 20px; align-items: center;">
+                <a href="#home" style="color: rgb(0, 0, 0); text-decoration: none; font-size: 1em;">Accueil</a>
+                <a href="#services" style="color: rgb(0, 0, 0); text-decoration: none; font-size: 1em;"><i class="fas fa-cogs"></i> Services</a>
+                <a href="#frais" style="color: rgb(0, 0, 0); text-decoration: none; font-size: 1em;"><i class="fas fa-money-bill-wave"></i> Frais</a>
+                <a href="#heures" style="color: rgb(0, 0, 0); text-decoration: none; font-size: 1em;"><i class="fas fa-clock"></i> Heures d'ouverture</a>
+                <a href="#siege" style="color: rgb(0, 0, 0); text-decoration: none; font-size: 1em;"><i class="fas fa-map-marker-alt"></i> Où nous trouver</a>
+                <a href="#contacts" style="color: rgb(0, 0, 0); text-decoration: none; font-size: 1em;"><i class="fas fa-envelope"></i> Contacts</a>
+                <a href="#about" style="color: rgb(0, 0, 0); text-decoration: none; font-size: 1em;">À propos</a>
+            </div>
+        
+            <!-- Bouton S'inscrire -->
+            <button onclick="scrollToForm()" style="background-color: rgb(70, 70, 70); color: #ffffff; padding: 10px 20px; border: none; border-radius: 5px; font-size: 1em; cursor: pointer; transition: background-color 0.3s;">
+                S'inscrire
+            </button>
+        </nav>    
+    
+        <!-- Contenu des sections -->
+    <main>
+        
+        <section id="about" style="font-family: Arial, sans-serif; background-color: #f9f9f9; padding: 20px; border-radius: 10px; text-align: left; margin: 20px auto; max-width: 1200px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+            <h2 style="color: #0a6b01; font-size: 2em; text-shadow: 1px 1px 2px #ccc; text-align: center;">À propos de nous</h2>
+            <p style="font-size: 1.2em; color: #555; line-height: 1.8;">
+                Bienvenue au <strong>Centre de Formation Bien Gérer pour Réussir (BGR-SERVICES)</strong>, votre partenaire privilégié pour l'apprentissage et le développement des compétences. Situé au cœur de Dakar, notre centre offre des formations de haute qualité adaptées aux besoins des professionnels, des étudiants, et des passionnés de technologie.
+            </p>
+        
+            <h3 style="color: #0a6b01; font-size: 1.5em; margin-top: 20px;">MISSION :</h3>
+            <p style="font-size: 1.1em; color: #555; line-height: 1.6;">
+                Notre mission est de fournir une éducation et une formation de qualité qui permettent à nos apprenants de développer les compétences nécessaires pour réussir dans un monde en constante évolution. Nous nous engageons à promouvoir l'excellence académique et professionnelle.
+            </p>
+        
+            <h3 style="color: #0a6b01; font-size: 1.5em; margin-top: 20px;">DOMAINE DE FORMATION :</h3>
+            <ul style="list-style: none; padding: 0; color: #555; font-size: 1.1em; line-height: 1.8;">
+                <li><strong>Bureautique :</strong> Maîtrisez les outils bureautiques essentiels comme Microsoft Word, Excel, PowerPoint, et Access.</li>
+                <li><strong>Développement Web :</strong> Devenez expert en HTML, CSS, JavaScript, et apprenez à créer des sites web attractifs et fonctionnels.</li>
+                <li><strong>Design Graphique :</strong> Découvrez les outils de conception graphique comme Canva pour réaliser des visuels percutants.</li>
+                <li><strong>Gestion de Projets :</strong> Acquérez des compétences en gestion de projets pour mener à bien vos initiatives professionnelles.</li>
+            </ul>
+        
+            <h3 style="color: #0a6b01; font-size: 1.5em; margin-top: 20px;">NOS FORMATEURS :</h3>
+            <p style="font-size: 1.1em; color: #555; line-height: 1.6;">
+                Nos formateurs sont des professionnels expérimentés et passionnés, engagés à partager leurs connaissances et à accompagner les apprenants dans leur parcours de formation. Leur expertise et leur dévouement garantissent une expérience d'apprentissage enrichissante et inspirante.
+            </p>
+        
+            <h3 style="color: #0a6b01; font-size: 1.5em; margin-top: 20px;">INFRASTRUCTURES ET RESSOURCES :</h3>
+            <p style="font-size: 1.1em; color: #555; line-height: 1.6;">
+                Notre centre dispose de salles de formation modernes et équipées, ainsi que de ressources pédagogiques de pointe pour offrir un environnement propice à l'apprentissage. Nous mettons à disposition des apprenants des supports de cours actualisés et des exercices pratiques pour une assimilation optimale des compétences.
+            </p>
+        </section>
+        
+
+        
+        <section id="services" style="font-family: Arial, sans-serif; background-color: #f9f9f9; padding: 20px; border-radius: 10px; text-align: center; margin: 20px auto; max-width: 1200px;">
+            <h2 class="services-title" style="color: #0a6b01; font-size: 2em; text-shadow: 1px 1px 2px #ccc;">Nos services offerts</h2>
+            <p style="font-size: 1.2em; color: #555; margin-bottom: 20px;">Découvrez nos services adaptés à vos besoins :</p>
+        
+            <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
+                <div class="service-detail" style="background-color: #e8f1ff; padding: 15px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); max-width: 250px; text-align: left;">
+                    <img src="wordL.jpg" alt="Consultation stratégique" style="width: 100px; height: 100px; border-radius: 50%; margin-bottom: 15px;">
+                    <h3 style="color: #0a6b01; font-size: 1.3em; margin-bottom: 10px;">Consultation stratégique</h3>
+                </div>
+        
+                <div class="service-detail" style="background-color: #fef8e0; padding: 15px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); max-width: 250px; text-align: left;">
+                    <img src="excelL.png" alt="Conception web" style="width: 100px; height: 100px; border-radius: 50%; margin-bottom: 15px;">
+                    <h3 style="color: #0a6b01; font-size: 1.3em; margin-bottom: 10px;">Conception de sites web</h3>
+                </div>
+        
+                <div class="service-detail" style="background-color: #dff8e0; padding: 15px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); max-width: 250px; text-align: left;">
+                    <img src="PP.png" alt="Marketing digital" style="width: 100px; height: 100px; border-radius: 50%; margin-bottom: 15px;">
+                    <h3 style="color: #0a6b01; font-size: 1.3em; margin-bottom: 10px;">Marketing digital</h3>
+                </div>
+        
+                <div class="service-detail" style="background-color: #ffe6d5; padding: 15px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); max-width: 250px; text-align: left;">
+                    <img src="pw.png" alt="Création de contenu" style="width: 100px; height: 100px; border-radius: 50%; margin-bottom: 15px;">
+                    <h3 style="color: #0a6b01; font-size: 1.3em; margin-bottom: 10px;">Création de contenu</h3>
+                </div>
+
+                <div class="service-detail" style="background-color: #0081fa23; padding: 15px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); max-width: 250px; text-align: left;">
+                    <img src="CC.png" alt="Création de contenu" style="width: 100px; height: 100px; border-radius: 50%; margin-bottom: 15px;">
+                    <h3 style="color: #0a6b01; font-size: 1.3em; margin-bottom: 10px;">Création de contenu</h3>
+                </div>
+
+                <div class="service-detail" style="background-color: #ffe6d5; padding: 15px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); max-width: 250px; text-align: left;">
+                    <img src="JHC.png" alt="Création de contenu" style="width: 100px; height: 100px; border-radius: 50%; margin-bottom: 15px;">
+                    <h3 style="color: #0a6b01; font-size: 1.3em; margin-bottom: 10px;">Création de contenu</h3>
+                </div>
+
+                <div class="service-detail" style="background-color: #05bbe91f; padding: 15px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); max-width: 250px; text-align: left;">
+                    <img src="WP.png" alt="Création de contenu" style="width: 100px; height: 100px; border-radius: 50%; margin-bottom: 15px;">
+                    <h3 style="color: #0a6b01; font-size: 1.3em; margin-bottom: 10px;">Création de contenu</h3>
+                </div>
+
+            </div>
+        </section>
+        
+        
+
+        <section id="heures" style="font-family: Arial, sans-serif; background-color: #f9f9f9; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); text-align: center; margin: 20px auto; max-width: 800px;">
+            <h2 class="heures-title" style="color: #0a6b01; font-size: 2em; text-shadow: 1px 1px 2px #ccc;">Nos heures d'ouverture</h2>
+            <p style="font-size: 1.2em; color: #555; margin-bottom: 15px;">Nous sommes disponibles pour vous accueillir durant les périodes suivantes :</p>
+            <table style="width: 100%; border-collapse: collapse; text-align: center;">
+                <tr style="background-color: #003300; color: white;">
+                    <th style="padding: 10px; border: 1px solid #ddd;">Jour</th>
+                    <th style="padding: 10px; border: 1px solid #ddd;">Heures</th>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ddd; background-color: #fff;">Lundi - Vendredi</td>
+                    <td style="padding: 10px; border: 1px solid #ddd; background-color: #fff;">8h00 - 18h00</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ddd; background-color: #f7f7f7;">Samedi</td>
+                    <td style="padding: 10px; border: 1px solid #ddd; background-color: #f7f7f7;">9h00 - 14h00</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ddd; background-color: #fff;">Dimanche</td>
+                    <td style="padding: 10px; border: 1px solid #ddd; background-color: #fff;">Fermé</td>
+                </tr>
+            </table>
+        </section>
+        
+
+        <section id="frais" style="font-family: Arial, sans-serif; background-color: #f9f9f9; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); text-align: center; margin: 20px auto; max-width: 800px;">
+            <h2 class="frais-title" style="color: #0a6b01; font-size: 2em; text-shadow: 1px 1px 2px #ccc;">Frais de formation</h2>
+            <p style="font-size: 1.2em; color: #555;">Nous proposons différents programmes de formation adaptés à vos besoins :</p>
+            <ul style="list-style: none; padding: 0; font-size: 1.1em; color: #333; margin-top: 15px;">
+                <li style="margin-bottom: 10px; padding: 10px; background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+                    📚 Formation courte (3 mois) : <strong style="color: #0a6b01;">25 000 FCFA</strong>
+                </li>
+                <li style="margin-bottom: 10px; padding: 10px; background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+                    📘 Formation complète (6 mois) : <strong style="color: #0a6b01;">55 000 FCFA</strong>
+                </li>
+                <li style="margin-bottom: 10px; padding: 10px; background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+                    🎯 Formation personnalisée : <strong style="color: #0a6b01;">Sur devis</strong>
+                </li>
+            </ul>
+        </section>
+        
+
+        <section id="formation" style="font-family: Arial, sans-serif; background-color: #f9f9f9; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); text-align: center; margin: 20px auto; max-width: 800px;">
+            <h2 class="formation-title" style="color: #0a6b01; font-size: 2em; text-shadow: 1px 1px 2px #ccc;">Modes de formation</h2>
+            <p style="font-size: 1.2em; color: #555;">Nous offrons trois modes de formation pour répondre à vos préférences :</p>
+            <ul style="list-style: none; padding: 0; font-size: 1.1em; color: #333; margin-top: 15px;">
+                <li style="margin-bottom: 10px; padding: 10px; background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+                    🎓 <strong>Présentiel</strong> : Des cours en salle avec des formateurs expérimentés.
+                </li>
+                <li style="margin-bottom: 10px; padding: 10px; background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+                    💻 <strong>En ligne</strong> : Formation accessible depuis le confort de votre domicile.
+                </li>
+                <li style="margin-bottom: 10px; padding: 10px; background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+                    🌐 <strong>Hybride</strong> : Combinaison de sessions en ligne et en présentiel.
+                </li>
+            </ul>
+            <p style="font-size: 1.1em; color: #555; margin-top: 20px;">Choisissez le mode qui correspond le mieux à vos besoins !</p>
+        </section>
+        
+
+        <section id="siege" style="text-align: center; font-family: Arial, sans-serif; background-color: #f9f9f9; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+            <h2 style="color: #013f01; font-size: 2em; text-shadow: 1px 1px 2px #ccc;">Où nous trouver</h2>
+            <p style="font-size: 1.2em; color: #555; margin-bottom: 15px;">Notre centre a le plaisir de vous accueillir dans deux localisations :</p>
+            
+            <div style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap;">
+                <div style="max-width: 300px; background-color: white; padding: 15px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); text-align: left;">
+                    <h3 style="color: #003600;">📍 Sénégal</h3>
+                    <p>123 Rue de l'Entreprise, Dakar, Sénégal</p>
+                    <p style="font-size: 0.9em; color: #777;">Vous êtes les bienvenus pour toute visite durant nos heures d'ouverture.</p>
+                </div>
+                <div style="max-width: 300px; background-color: white; padding: 15px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); text-align: left;">
+                    <h3 style="color: #003800;">📍 Congo Brazzaville</h3>
+                    <p>456 Avenue de la République, Brazzaville, Congo</p>
+                    <p style="font-size: 0.9em; color: #777;">Nous sommes disponibles pour répondre à vos besoins professionnels et éducatifs.</p>
+                </div>
+            </div>
+        </section>
+        
+
+<!-- Section "ACTUALITE RECENTE" -->
+<section id="actualite-recente">
+    <h2 class="section-title">
+        <i class="fas fa-newspaper"></i> Actualité Récente
+    </h2>
+    <div class="actualite-detail">
+        <img src="8.png" alt="Actualité 1" class="actualite-img" onclick="openModal(this);">
+        <div>
+            <h3 class="actualite-title">Nouvelle Collaboration avec XYZ</h3>
+            <p class="section-text">
+                Nous sommes ravis d'annoncer notre nouvelle collaboration avec XYZ pour améliorer nos services.
+            </p>
+        </div>
+    </div>
+    <div class="actualite-detail">
+        <img src="9.png" alt="Actualité 2" class="actualite-img" onclick="openModal(this);">
+        <div>
+            <h3 class="actualite-title">Lancement de notre nouveau site web</h3>
+            <p class="section-text">
+                Découvrez notre nouveau site web avec un design moderne et de nouvelles fonctionnalités.
+            </p>
+        </div>
+    </div>
+    <div class="actualite-detail">
+        <img src="3.png" alt="Actualité 3" class="actualite-img" onclick="openModal(this);">
+        <div>
+            <h3 class="actualite-title">Participation à l'événement ABC</h3>
+            <p class="section-text">
+                Nous avons participé à l'événement ABC et avons présenté nos dernières innovations.
+            </p>
+        </div>
+    </div>
+    <div class="actualite-detail">
+        <img src="1.png" alt="Actualité 3" class="actualite-img" onclick="openModal(this);">
+        <div>
+            <h3 class="actualite-title">Participation à l'événement ABC</h3>
+            <p class="section-text">
+                Nous avons participé à l'événement ABC et avons présenté nos dernières innovations.
+            </p>
+        </div>
+    </div>
+    <div class="actualite-detail">
+        <img src="M.jpg" alt="Actualité 3" class="actualite-img" onclick="openModal(this);">
+        <div>
+            <h3 class="actualite-title">Participation à l'événement ABC</h3>
+            <p class="section-text">
+                Nous avons participé à l'événement ABC et avons présenté nos dernières innovations.
+            </p>
+        </div>
+    </div>
+    <div class="actualite-detail">
+        <img src="B.jpg" alt="Actualité 3" class="actualite-img" onclick="openModal(this);">
+        <div>
+            <h3 class="actualite-title">Participation à l'événement ABC</h3>
+            <p class="section-text">
+                Nous avons participé à l'événement ABC et avons présenté nos dernières innovations.
+            </p>
+        </div>
+    </div>
+    <div class="actualite-detail">
+        <img src="J1.jpg" alt="Actualité 3" class="actualite-img" onclick="openModal(this);">
+        <div>
+            <h3 class="actualite-title">Participation à l'événement ABC</h3>
+            <p class="section-text">
+                Nous avons participé à l'événement ABC et avons présenté nos dernières innovations.
+            </p>
+        </div>
+    </div>
+    <div class="actualite-detail">
+        <img src="K.jpg" alt="Actualité 3" class="actualite-img" onclick="openModal(this);">
+        <div>
+            <h3 class="actualite-title">Participation à l'événement ABC</h3>
+            <p class="section-text">
+                Nous avons participé à l'événement ABC et avons présenté nos dernières innovations.
+            </p>
+        </div>
+    </div>
+    <div class="actualite-detail">
+        <img src="C1.jpg" alt="Actualité 3" class="actualite-img" onclick="openModal(this);">
+        <div>
+            <h3 class="actualite-title">Participation à l'événement ABC</h3>
+            <p class="section-text">
+                Nous avons participé à l'événement ABC et avons présenté nos dernières innovations.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Boîte modale -->
+<div id="myModal" class="modal">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <img class="modal-content" id="img01">
+    <div id="caption"></div>
+</div>
+</section>
+
+<section id="contacts" style="font-family: Arial, sans-serif; background-color: #f9f9f9; padding: 20px; border-radius: 10px; text-align: center; margin: 20px auto; max-width: 800px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+    <h2 style="color: #0a6b01; font-size: 2em; text-shadow: 1px 1px 2px #ccc;">Contacts</h2>
+    <p style="font-size: 1.2em; color: #555;">Vous pouvez nous joindre via les moyens suivants :</p>
+    <ul style="list-style: none; padding: 0; margin: 20px 0;">
+        <li style="margin-bottom: 15px; font-size: 1.1em; color: #333; display: flex; align-items: center; gap: 10px; justify-content: center;">
+            <i class="fas fa-phone-alt" style="color: #0a6b01; font-size: 1.5em;"></i>
+            Téléphone : <strong style="color: #0a6b01;">+221 78 188 34 08</strong>
+        </li>
+        <li style="margin-bottom: 15px; font-size: 1.1em; color: #333; display: flex; align-items: center; gap: 10px; justify-content: center;">
+            <i class="fas fa-envelope" style="color: #0a6b01; font-size: 1.5em;"></i>
+            Email : <strong style="color: #0a6b01;">rmarket.online1@hotmail.com</strong>
+        </li>
+        <li style="margin-bottom: 15px; font-size: 1.1em; color: #333; display: flex; align-items: center; gap: 10px; justify-content: center;">
+            <i class="fas fa-map-marker-alt" style="color: #0a6b01; font-size: 1.5em;"></i>
+            Adresse : <strong style="color: #0a6b01;">123 Avenue hiacynt thiandoum, hlm grand yoff, Dakar</strong>
+        </li>
+    </ul>
+</section>
+
+
+        <section id="reseaux-sociaux" style="text-align: center">
+            <h2>Suivez-nous sur les réseaux sociaux</h2>
+            <div>
+                <a href="https://www.facebook.com/share/1BLgDXfQeG/?mibextid=wwXIfr" target="_blank">
+                    <i class="fab fa-facebook fa-2x"></i> Facebook
+                </a>
+                <a href="https://twitter.com" target="_blank">
+                    <i class="fab fa-twitter fa-2x"></i> Twitter
+                </a>
+                <a href="https://www.instagram.com/bgr.service?igsh=MTl2dXM1cXMyajN6eA%3D%3D&utm_source=qr" target="_blank">
+                    <i class="fab fa-instagram fa-2x"></i> Instagram
+                </a>
+                <a href="https://linkedin.com" target="_blank">
+                    <i class="fab fa-linkedin fa-2x"></i> LinkedIn
+                </a>
+            </div>
+        </section>
+
+        <!-- Section Témoignages -->
+    <section id="temoignages">
+        <h2 class="section-title">
+            <i class="fas fa-comments"></i> Témoignages
+        </h2>
+        <div class="temoignage-detail">
+            <img src="PR.jpg" alt="Témoin 1" class="temoignage-img">
+            <div>
+                <h3 class="temoignage-title">Précise Bassakinina</h3>
+                <div class="stars">
+                    ★★★★☆
+                </div>
+                <p class="section-text">
+                    "Excellente formation! Les enseignants sont très compétents et le contenu est très pertinent."
+                </p>
+            </div>
+        </div>
+        <div class="temoignage-detail">
+            <img src="RA.jpg" alt="Témoin 2" class="temoignage-img">
+            <div>
+                <h3 class="temoignage-title">Ravi Dikatsou</h3>
+                <div class="stars">
+                    ★★★★★
+                </div>
+                <p class="section-text">
+                    "Grâce à la formation en développement web, j'ai pu créer mon propre site et lancer mon activité en ligne. Les formateurs sont vraiment à l'écoute et très pédagogues."
+                </p>
+            </div>
+        </div>
+        <div class="temoignage-detail">
+            <img src="ES.jpg" alt="Témoin 3" class="temoignage-img">
+            <div>
+                <h3 class="temoignage-title">Esther Assemake</h3>
+                <div class="stars">
+                    ★★★☆☆
+                </div>
+                <p class="section-text">
+                    "La formation est bonne, mais il y a quelques points à améliorer."
+                </p>
+            </div>
+        </div>
+
+        <!-- Formulaire de commentaire -->
+        <h3 class="section-title">Laissez un commentaire</h3>
+        <form id="comment-form">
+            <div>
+                <label for="name">Nom</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div>
+                <label for="rating">Évaluation</label>
+                <select id="rating" name="rating" required>
+                    <option value="5">★★★★★</option>
+                    <option value="4">★★★★☆</option>
+                    <option value="3">★★★☆☆</option>
+                    <option value="2">★★☆☆☆</option>
+                    <option value="1">★☆☆☆☆</option>
+                </select>
+            </div>
+            <div>
+                <label for="comment">Commentaire</label>
+                <textarea id="comment" name="comment" rows="4" required></textarea>
+            </div>
+            <div>
+                <button type="submit">Envoyer</button>
+            </div>
+        </form>
+    </section>
+
+    <section id="formulaire-inscription" style="font-family: Arial, sans-serif; background-color: #f9f9f9; padding: 30px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); max-width: 600px; margin: 0 auto;">
+        <h2 style="color: #0a6b01; font-size: 2em; text-align: center; text-shadow: 1px 1px 2px #ccc;">Formulaire d'inscription en ligne</h2>
+        <form action="traitement_formulaire.php" method="post" style="margin-top: 20px;">
+            <div style="margin-bottom: 15px;">
+                <label for="nom" style="display: block; font-weight: bold; margin-bottom: 5px;">Nom complet :</label>
+                <input type="text" id="nom" name="nom" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+            </div>
+            <div style="margin-bottom: 15px;">
+                <label for="email" style="display: block; font-weight: bold; margin-bottom: 5px;">Email :</label>
+                <input type="email" id="email" name="email" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+            </div>
+            <div style="margin-bottom: 15px;">
+                <label for="telephone" style="display: block; font-weight: bold; margin-bottom: 5px;">Téléphone :</label>
+                <input type="tel" id="telephone" name="telephone" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+            </div>
+            <div style="margin-bottom: 15px;">
+                <label for="FORMATION" style="display: block; font-weight: bold; margin-bottom: 5px;">Types de formation :</label>
+                <select id="FORMATION" name="Types-de-formation" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+                    <option value="Microsoft-Excel">Microsoft Excel</option>
+                    <option value="Microsoft-Word">Microsoft Word</option>
+                    <option value="Microsoft-Publisher">Microsoft Publisher</option>
+                    <option value="Microsoft-PowerPoint">Microsoft PowerPoint</option>
+                    <option value="Pack-Office">Pack Office</option>
+                    <option value="Canva">Canva</option>
+                    <option value="WordPress">WordPress</option>
+                    <option value="HTML-CSS-JavaScript">HTML, CSS, JavaScript</option>
+                </select>
+            </div>
+            <div style="margin-bottom: 15px;">
+                <label for="programme" style="display: block; font-weight: bold; margin-bottom: 5px;">Programme souhaité :</label>
+                <select id="programme" name="programme" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+                    <option value="formation-courte">Formation courte</option>
+                    <option value="formation-complete">Formation complète</option>
+                    <option value="formation-personnalisee">Formation personnalisée</option>
+                </select>
+            </div>
+            <div style="margin-bottom: 15px;">
+                <label for="mode-formation" style="display: block; font-weight: bold; margin-bottom: 5px;">Mode de formation :</label>
+                <select id="mode-formation" name="mode-formation" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+                    <option value="presentiel">Présentiel</option>
+                    <option value="en-ligne">En ligne</option>
+                    <option value="hybride">Hybride</option>
+                </select>
+            </div>
+            <div style="margin-bottom: 15px;">
+                <label for="message" style="display: block; font-weight: bold; margin-bottom: 5px;">Message :</label>
+                <textarea id="message" name="message" rows="4" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;"></textarea>
+            </div>
+            <button type="submit" style="background-color: #0a6b01; color: white; padding: 10px 20px; border: none; border-radius: 5px; font-size: 1em; cursor: pointer; transition: background-color 0.3s;">
+                Envoyer
+            </button>
+        </form>
+    </section>
+
+    
+    
+
+    <!-- Icône de Chatbot -->
+    <div id="chatbot-icon" onclick="toggleChatbot()">
+        <img src="RA.jpg" alt="Chatbot" style="width: 60px; height: 60px; border-radius: 50%; cursor: pointer;">
+    </div>
+    
+
+<div id="chatbot">
+    <div id="chatbot-header">Votre assistant</div>
+    <div id="chatbot-body">
+        <div id="messages"></div>
+        <div id="suggestions">
+            <button class="suggestion-button" onclick="sendSuggestion('Quels services proposez-vous ?')">Quels services proposez-vous ?</button>
+            <button class="suggestion-button" onclick="sendSuggestion('Quels sont vos horaires ?')">Quels sont vos horaires ?</button>
+            <button class="suggestion-button" onclick="sendSuggestion('Comment puis-je vous contacter ?')">Comment puis-je vous contacter ?</button>
+        </div>
+        <input type="text" id="user-input" placeholder="Écrivez votre message ici..." />
+        <button id="send-button">Envoyer</button>
+    </div>
+</div>
+
+<div id="cookie-banner">
+    <p>
+        Nous utilisons des cookies pour améliorer votre expérience sur notre site. En continuant, vous acceptez notre 
+        <a href="file:///C:/Users/HELLO/Documents/BGRS/cookies.html" target="_blank">politique de cookies</a>.
+    </p>
+    <button id="accept-cookies">Accepter</button>
+</div>
+
+
+    </main>
+
+<!-- JavaScript pour la boîte modale -->
+<script>
+    function openModal(element) {
+        var modal = document.getElementById("myModal");
+        var modalImg = document.getElementById("img01");
+        var captionText = document.getElementById("caption");
+    
+        modal.style.display = "block";
+        modalImg.src = element.src;
+        captionText.innerHTML = element.alt;
+    }
+    
+    function closeModal() {
+        var modal = document.getElementById("myModal");
+        modal.style.display = "none";
+    }
+    </script>
+
+    <script>
+         function toggleChatbot() {
+        const chatbot = document.getElementById("chatbot");
+        if (chatbot.style.display === "none" || chatbot.style.display === "") {
+            chatbot.style.display = "block"; // Afficher le chatbot
+        } else {
+            chatbot.style.display = "none"; // Cacher le chatbot
+        }
+    }
+
+    const responses = {
+    "Bonjour": "Bonjour ! Comment puis-je vous aider aujourd'hui ?",
+    "Quels services proposez-vous ?": "Nous proposons des formations en web design, marketing digital, et bien plus encore.",
+    "Quels sont vos horaires ?": "Nous sommes ouverts du lundi au vendredi de 8h00 à 18h00, et le samedi de 9h00 à 14h00.",
+    "Comment puis-je vous contacter ?": "Nous sommes joignable par téléphone au +221781883408 et sur whatsApp ainsi que sur toutes les plateformes des médians sociaux.",
+    "Merci": "Avec plaisir ! Si vous avez d'autres questions, n'hésitez pas."
+};
+
+document.getElementById("send-button").addEventListener("click", () => {
+    const userInput = document.getElementById("user-input").value;
+    const messagesDiv = document.getElementById("messages");
+
+    // Ajouter la question de l'utilisateur
+    const userMessage = document.createElement("div");
+    userMessage.textContent = "Vous : " + userInput;
+    userMessage.style.color = "blue";
+    messagesDiv.appendChild(userMessage);
+
+    // Fournir une réponse adaptée
+    let botResponse = "Désolé, je n'ai pas compris votre question.";
+    if (responses[userInput]) {
+        botResponse = responses[userInput];
+    }
+
+    const botMessage = document.createElement("div");
+    botMessage.textContent = "Votre Assistant : " + botResponse;
+
+    botMessage.style.color = "black";
+    messagesDiv.appendChild(botMessage);
+
+    // Réinitialiser la zone de saisie
+    document.getElementById("user-input").value = "";
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+});
+
+function sendSuggestion(question) {
+    const userInput = document.getElementById("user-input");
+    userInput.value = question; // Pré-remplit le champ de saisie
+    document.getElementById("send-button").click(); // Simule un clic sur le bouton Envoyer
+}
+
+    document.getElementById("send-button").addEventListener("click", function() {
+        const userInput = document.getElementById("user-input").value;
+        if (userInput.trim() !== "") {
+            const messagesDiv = document.getElementById("messages");
+            const userMessage = document.createElement("div");
+            userMessage.textContent = "Vous: " + userInput;
+            userMessage.style.color = "blue";
+            messagesDiv.appendChild(userMessage);
+
+            // Réponse automatique du chatbot
+            const botResponse = document.createElement("div");
+            botResponse.textContent = "Chatbot: Merci pour votre message !";
+            botResponse.style.color = "green";
+            messagesDiv.appendChild(botResponse);
+
+            // Réinitialiser la zone de saisie
+            document.getElementById("user-input").value = "";
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const cookieBanner = document.getElementById("cookie-banner");
+        const acceptButton = document.getElementById("accept-cookies");
+
+        // Vérifiez si l'utilisateur a déjà accepté les cookies
+        if (localStorage.getItem("cookiesAccepted") === "true") {
+            cookieBanner.style.display = "none";
+        }
+
+        // Lorsque l'utilisateur clique sur "Accepter"
+        acceptButton.addEventListener("click", function () {
+            localStorage.setItem("cookiesAccepted", "true");
+            cookieBanner.style.display = "none";
+        });
+    });
+</script>
+
+<script>
+    function scrollToForm() {
+        const formSection = document.getElementById("formulaire-inscription");
+        formSection.scrollIntoView({ behavior: "smooth" });
+    }
+</script>
+
+
+    <!-- Bouton WhatsApp -->
+    <a href="https://wa.me/221781883408" class="whatsapp-icon" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+    <footer>
+        <p>&copy; 2025 Votre entreprise. Tous droits réservés.</p>
+    </footer>
+</body>
+</html>
